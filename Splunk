@@ -1,1 +1,34 @@
+# 1. View all Suricata events
+index=Suricata
 
+# 2. View Suricata alerts
+index=Suricata event_type=alert
+
+# 3. Suricata Event Types
+index=Suricata
+| stats count by event_type
+| sort - count
+
+# 4. Suricata Alerts Over Time
+index=Suricata event_type=alert
+| timechart count
+
+# 5. Top Source IPs
+index=Suricata event_type=alert
+| stats count by src_ip
+| sort - count
+| head 10
+
+# 6. Top Destination IPs
+index=Suricata event_type=alert
+| stats count by dest_ip
+| sort - count
+| head 10
+
+# 7. Recent Suricata Alerts
+index=Suricata event_type=alert
+| table _time src_ip src_port dest_ip dest_port proto alert.signature
+| sort - _time
+
+# 8. Splunk Detection Alert
+index=Suricata event_type=alert
